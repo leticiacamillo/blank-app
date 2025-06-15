@@ -76,11 +76,14 @@ def extrair_valores_provaveis_com_fallback(texto):
         "recuo_lateral": 1.5,
         "permeabilidade": 20.0,
         "pavimentos": 0
+        "area_lote": 600.0
+
     }
 
     texto = texto.lower()
     dados = {}
 
+    area_lote = re.search(r"area.*?(\d+[.,]?\d*)\s*m", texto)
     frente = re.search(r"frente.*?(\d+[.,]?\d*)\s*m", texto)
     to = re.search(r"taxa de ocupação.*?(\d+[.,]?\d*)\s*%", texto)
     ca = re.search(r"coeficiente de aproveitamento.*?(\d+[.,]?\d*)", texto)
@@ -89,6 +92,7 @@ def extrair_valores_provaveis_com_fallback(texto):
     permeab = re.search(r"permeabilidade.*?(\d+[.,]?\d*)\s*%", texto)
     pav = re.search(r"(\d{1,2})\s*pavimentos", texto)
 
+    dados["area_lote"] = float(area_lote.group(1).replace(",", ".")) if area_lote else simulados["area_lote"]
     dados["frente_lote"] = float(frente.group(1).replace(",", ".")) if frente else simulados["frente_lote"]
     dados["taxa_ocupacao"] = float(to.group(1).replace(",", ".")) if to else simulados["taxa_ocupacao"]
     dados["coeficiente_aproveitamento"] = float(ca.group(1).replace(",", ".")) if ca else simulados["coeficiente_aproveitamento"]
@@ -138,7 +142,7 @@ if pdf_file:
                     "Comercial", "Industrial", "Outro"
                 ])
 
-                area_lote = st.number_input("Área do lote (m²)", min_value=0.0)
+                area_lote = st.number_input("Área do lote (m²)", min_value=0.0, value=dados["area_lote"])
                 frente = st.number_input("Frente do lote (m)", value=dados["frente_lote"])
                 to = st.number_input("Taxa de ocupação (%)", value=dados["taxa_ocupacao"])
                 ca = st.number_input("Coeficiente de aproveitamento", value=dados["coeficiente_aproveitamento"])
