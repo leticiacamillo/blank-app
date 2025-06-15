@@ -75,7 +75,7 @@ def extrair_valores_provaveis_com_fallback(texto):
         "recuo_frontal": 5.0,
         "recuo_lateral": 1.5,
         "permeabilidade": 20.0,
-        "pavimentos": 0
+        "pavimentos": 0,
         "area_lote": 600.0
 
     }
